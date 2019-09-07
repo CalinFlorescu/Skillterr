@@ -77,3 +77,14 @@ create table `Messages` (
     foreign key (user_id_to) references User(user_id)
 );
 
+create table `Comments` (
+	comment_id int(20) not null auto_increment,
+    user_id int(20) not null,
+    post_id int(20) not null,
+    content text not null,
+    date_created date not null,
+    date_updated date,
+    primary key (comment_id),
+    foreign key (post_id) references Posts(post_id),
+    foreign key (user_id) references User(user_id)
+)
