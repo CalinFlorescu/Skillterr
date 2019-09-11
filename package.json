@@ -1,0 +1,19 @@
+{
+  "name": "skillterr-server",
+  "version": "1.0.0",
+  "description": "Skillterr's server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js"
+  },
+  "author": "Calin Florescu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql2": "^1.7.0",
+    "nodemon": "^1.19.2",
+    "sequelize": "^5.18.4"
+  }
+}
