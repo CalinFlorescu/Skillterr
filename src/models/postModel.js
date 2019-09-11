@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+const Comment = require('./commentModel');
+const Like = require('./likeModel');
 
 const Post = db.define('Posts', {
     description: {
@@ -22,11 +24,14 @@ const Post = db.define('Posts', {
         allowNull: false
     },
     date_created: {
-       type: Sequelize.STRING,
+       type: Sequelize.DATE,
         allowNull: false
     }
 }, {
     timestamps: false
 });
+
+Post.hasMany(Comment, {foreignKey: 'post_id'});
+Post.hasMany(Like, {foreignKey: 'post_id'});
 
 module.exports = Post;

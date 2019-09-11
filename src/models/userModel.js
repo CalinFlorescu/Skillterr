@@ -2,6 +2,10 @@ const Sequelize = require('sequelize');
 const database = require('../config/database');
 const UserCv = require('./userCvModel');
 const Post = require('./postModel');
+const Following = require('./followingModel');
+const Like = require('./likeModel');
+const Comment = require('./commentModel');
+const Message = require('./messageModel');
 
 const User = database.define('Users', {
     // attributes
@@ -32,7 +36,7 @@ const User = database.define('Users', {
         allowNull: false
     },
     date_created: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false
     },
     active: {
@@ -67,5 +71,11 @@ const User = database.define('Users', {
 
 User.hasOne(UserCv, { foreignKey: 'user_id'});
 User.hasMany(Post, {foreignKey: 'user_id'});
+User.hasMany(Following, { foreignKey: 'user_id'});
+User.hasMany(Following, { foreignKey: 'following_id'});
+User.hasMany(Like, { foreignKey: 'user_id'});
+User.hasMany(Comment, { foreignKey: 'user_id'});
+User.hasMany(Message, { foreignKey: 'user_id_from'});
+User.hasMany(Message, { foreignKey: 'user_id_to'});
 
 module.exports = User;
