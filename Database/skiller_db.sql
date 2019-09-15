@@ -1,6 +1,7 @@
+drop table UserCv;
 
-create table `User` ( 
-	user_id int(20) NOT NULL auto_increment,
+create table `Users` ( 
+	id int(20) NOT NULL auto_increment,
     email varchar(255) not null,
     username varchar(255) not null,
     first_name varchar(255) not null,
@@ -17,7 +18,7 @@ create table `User` (
     hashcode_value varchar(255) not null,
     description text,
     availability varchar(255) not null,
-    primary key (user_id),
+    primary key (id),
     unique key email (email),
     unique key username (username),
     unique key activation_key (activation_key),
@@ -25,18 +26,18 @@ create table `User` (
     unique key hashcode_value (hashcode_value)
 );
 
-create table `UserCv` (
-	cv_id int(20) not null auto_increment,
+create table `UserCvs` (
+	id int(20) not null auto_increment,
     user_id int(20) not null,
     skills varchar(255) not null,
     workplace_role varchar(255) not null,
     languages varchar(255) not null,
-    primary key (cv_id),
-    foreign key (user_id) references User(user_id)
+    primary key (id),
+    foreign key (user_id) references Users(id)
 );
 
 create table `Posts` (
-	post_id int(20) not null auto_increment,
+	id int(20) not null auto_increment,
     user_id int(20) not null,
     description text not null,
     title varchar(255) not null,
@@ -44,17 +45,17 @@ create table `Posts` (
     tags varchar(255),
     price int(20),
     date_created DATE not null,
-    primary key (post_id),
-    foreign key (user_id) references User(user_id)
+    primary key (id),
+    foreign key (user_id) references Users(id)
 );
 
 create table `Followings` (
 	user_id int(20) not null,
-    following_id int(20) not null,
+    id int(20) not null,
     date_created date not null,
-    primary key (following_id, user_id),
-    foreign key (user_id) references User(user_id),
-    foreign key (following_id) references User(user_id)
+    primary key (id, user_id),
+    foreign key (user_id) references Users(id),
+    foreign key (id) references Users(id)
 );
 
 create table `Likes` (
@@ -62,29 +63,29 @@ create table `Likes` (
     post_id int(20) not null,
     date_created date not null,
     primary key (user_id, post_id),
-    foreign key (post_id) references Posts(post_id),
-    foreign key (user_id) references User(user_id)
+    foreign key (post_id) references Posts(id),
+    foreign key (user_id) references Users(id)
 );
 
 create table `Messages` (
-	message_id int(20) not null,
+	id int(20) not null,
     user_id_from int(20) not null,
     user_id_to int(20) not null,
     content text not null,
     date_created date not null,
-    primary key (message_id),
-    foreign key (user_id_from) references User(user_id),
-    foreign key (user_id_to) references User(user_id)
+    primary key (id),
+    foreign key (user_id_from) references Users(id),
+    foreign key (user_id_to) references Users(id)
 );
 
 create table `Comments` (
-	comment_id int(20) not null auto_increment,
+	id int(20) not null auto_increment,
     user_id int(20) not null,
     post_id int(20) not null,
     content text not null,
     date_created date not null,
     date_updated date,
-    primary key (comment_id),
-    foreign key (post_id) references Posts(post_id),
-    foreign key (user_id) references User(user_id)
+    primary key (id),
+    foreign key (post_id) references Posts(id),
+    foreign key (user_id) references User(id)
 )
