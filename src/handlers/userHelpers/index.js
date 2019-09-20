@@ -1,7 +1,5 @@
 const User = require('../../models/userModel');
 const jwt = require('jsonwebtoken');
-const constants = require('../../constants');
-const jwtVerifier = require('../../utils/jwtVerification');
 const { encryptingPassword, decryptingPassword } = require('../../utils/passwordSecure');
 
 const logInUser = async (req, res) => {
@@ -24,13 +22,13 @@ const logInUser = async (req, res) => {
     try {
         decryptedPassword = decryptingPassword(hashcode_value);
     } catch(err) {
-        console.log('There was a problem decrypting the pass:', err);
+        res.status(500).send('There was a problem decrypting the pass:', err);
     }
 
     if(encrypted_password === decryptedPassword) {
         let token = '';
         try {
-            token = jwt.sign({ userId: id}, constants.JWTTOKEN, { algorithm: 'HS256', expiresIn: '1h' });
+            token = jwt.sign({ userId: id}, process.env.JWTTOKEN, { algorithm: 'HS256', expiresIn: '1h' });
         } catch(err) {
             console.log('Error at JWT: ', err);
         }
@@ -41,19 +39,13 @@ const logInUser = async (req, res) => {
 };
 
 const retrieveUserByName = (req, res) => {
-    const { authorization, user_id } = req.headers;
-
-    if(jwtVerifier(authorization, user_id)) {
-        const username = req.url.substring(20, req.url.length);
-        User.findAll({
-            where: {
-                username
-            }
-        }).then(user => res.send(user))
-            .catch(err => console.log('User not found - error: ', err));
-    } else {
-        res.status(500).send('Invalid token or the token has expired');
-    }
+    const username = req.query.username;
+    User.findAll({
+        where: {
+            username
+        }
+    }).then(user => res.send(user))
+        .catch(err => res.status(500).send('User not found - error: ', err));
 };
 
 const addUser = (req, res) => {
@@ -79,7 +71,7 @@ const addUser = (req, res) => {
         profile_picture_url
     }).then(succes => {
         res.status(200).send(`Succes: ${succes}`);
-    }).catch(err => console.log(`There was a problem creating a user: ${err}`));
+    }).catch(err => res.status(500).send(`There was a problem creating a user: ${err}`));
 };
 
 module.exports = { retrieveUserByName, addUser, logInUser };
