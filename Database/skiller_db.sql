@@ -51,10 +51,12 @@ create table `Posts` (
 
 create table `Followings` (
 	user_id int(20) not null,
-    id int(20) not null,
+    following_id int(20) not null,
+    id int(20) not null auto_increment,
     date_created date not null,
-    primary key (id, user_id),
+    primary key (id, user_id, following_id),
     foreign key (user_id) references Users(id),
+    foreign key (following_id) references Users(id),
     foreign key (id) references Users(id)
 );
 
@@ -87,5 +89,5 @@ create table `Comments` (
     date_updated date,
     primary key (id),
     foreign key (post_id) references Posts(id),
-    foreign key (user_id) references User(id)
+    foreign key (user_id) references Users(id)
 )

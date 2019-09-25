@@ -2,16 +2,20 @@ const {
   retrieveUserByName,
   addUser,
   logInUser
-} = require("../handlers/userHelpers/index");
-const { retrievePost, createPost } = require("../handlers/postHelpers/index");
+} = require("../handlers/userHandlers/index");
+const { retrievePost, createPost } = require("../handlers/postHandlers/index");
 const {
   getCommentsByPostId,
   addComment
-} = require("../handlers/commentHelpers/index");
-const jwtVerification = require('../utils/jwtVerification');
+} = require("../handlers/commentHandlers/index");
+const {
+  addFollower,
+  retrieveFollowers
+} = require("../handlers/followersHandlers/index");
+const jwtVerification = require("../utils/jwtVerification");
 
 module.exports = app => {
-  app.use('/', jwtVerification);
+  app.use("/", jwtVerification);
 
   // User related paths
   app.post("/login", logInUser);
@@ -25,4 +29,8 @@ module.exports = app => {
   // Comment related paths
   app.get("/comments", getCommentsByPostId);
   app.post("/comment", addComment);
+
+  // Follow related paths
+  app.get("/follow", retrieveFollowers);
+  app.post("/follow", addFollower);
 };
