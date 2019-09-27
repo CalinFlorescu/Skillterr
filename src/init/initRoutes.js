@@ -12,6 +12,10 @@ const {
   addFollower,
   retrieveFollowers
 } = require("../handlers/followersHandlers/index");
+const {
+  retrieveUserCvByUserId,
+    addUserCv
+} = require('../handlers/userCvHandlers/index.js');
 const jwtVerification = require("../utils/jwtVerification");
 
 module.exports = app => {
@@ -33,4 +37,8 @@ module.exports = app => {
   // Follow related paths
   app.get("/follow", retrieveFollowers);
   app.post("/follow", addFollower);
+
+  // UserCv related paths
+  app.get('/user-cv', retrieveUserCvByUserId);
+  app.post('/user-cv', addUserCv);
 };
